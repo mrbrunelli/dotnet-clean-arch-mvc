@@ -25,7 +25,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("")]
         public void CreateProduct_NullAndEmptyName_DomainExceptionInvalidName(string name)
         {
-            Action action = () => _productMock.WithName(name).Build();
+            Action action = () => _productMock.WithProperty(p => p.Name, name).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
         }
 
@@ -35,7 +35,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("12")]
         public void CreateProduct_ShortName_DomainExceptionInvalidName(string name)
         {
-            Action action = () => _productMock.WithName(name).Build();
+            Action action = () => _productMock.WithProperty(p => p.Name, name).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Too short, minimum 3 characters");
         }
 
@@ -44,7 +44,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("")]
         public void CreateProduct_NullAndEmptyDescription_DomainExceptionInvalidDescription(string description)
         {
-            Action action = () => _productMock.WithDescription(description).Build();
+            Action action = () => _productMock.WithProperty(p => p.Description, description).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid description. Description is required");
         }
 
@@ -54,7 +54,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("1234")]
         public void CreateProduct_ShortDescription_DomainExceptionInvalidDescription(string description)
         {
-            Action action = () => _productMock.WithDescription(description).Build();
+            Action action = () => _productMock.WithProperty(p => p.Description, description).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid description. Too short, minimum 5 characters");
         }
 
@@ -64,7 +64,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData(-10)]
         public void CreateProduct_NegativePrice_DomainExceptionInvalidPrice(decimal price)
         {
-            Action action = () => _productMock.WithPrice(price).Build();
+            Action action = () => _productMock.WithProperty(p => p.Price, price).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid price value");
         }
 
@@ -73,7 +73,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData(-10)]
         public void CreateProduct_NegativeStock_DomainExceptionInvalidStock(int stock)
         {
-            Action action = () => _productMock.WithStock(stock).Build();
+            Action action = () => _productMock.WithProperty(p => p.Stock, stock).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid stock value");
         }
 
@@ -88,7 +88,7 @@ namespace CleanArchMvc.Domain.Tests
         )]
         public void CreateProduct_LongImageLocation_DomainExceptionInvalidImageLocation(string image)
         {
-            Action action = () => _productMock.WithImage(image).Build();
+            Action action = () => _productMock.WithProperty(p => p.ImageUrl, image).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid image location. Too long, maximum 250 characters");
         }
     }

@@ -22,7 +22,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("Premium Beer Glass")]
         public void CreateCategory_CompoundName_ResultObjectValidState(string name)
         {
-            Action action = () => _categoryMock.WithName(name);
+            Action action = () => _categoryMock.WithProperty(p => p.Name, name);
             action.Should().NotThrow();
         }
 
@@ -32,7 +32,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData(-100)]
         public void CreateCategory_NegativeIdValue_DomainExceptionInvalidId(int id)
         {
-            Action action = () => _categoryMock.WithId(id).Build();
+            Action action = () => _categoryMock.WithProperty(p => p.Id, id).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid Id value");
         }
 
@@ -41,7 +41,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("Ca")]
         public void CreateCategory_ShortNameValue_DomainExceptionShortName(string name)
         {
-            Action action = () => _categoryMock.WithName(name).Build();
+            Action action = () => _categoryMock.WithProperty(p => p.Name, name).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Name too short, minimum 3 characters");
         }
 
@@ -52,7 +52,7 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData(null)]
         public void CreateCategory_NullAndEmptyBlank_DomainExceptionRequiredName(string name)
         {
-            Action action = () => _categoryMock.WithName(name).Build();
+            Action action = () => _categoryMock.WithProperty(p => p.Name, name).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
         }
     }

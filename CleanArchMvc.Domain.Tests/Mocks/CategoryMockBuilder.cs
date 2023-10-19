@@ -3,6 +3,7 @@ using CleanArchMvc.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,8 +12,8 @@ namespace CleanArchMvc.Domain.Tests.Mocks
     public class CategoryMockBuilder
     {
         private readonly Faker<CategoryMockBuilder> _faker;
-        private int Id {  get; set; }
-        private string Name { get; set; } = string.Empty;
+        public int Id {  get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public CategoryMockBuilder()
         {
@@ -27,17 +28,9 @@ namespace CleanArchMvc.Domain.Tests.Mocks
             return new Category(mock.Id, mock.Name);
         }
 
-        public CategoryMockBuilder WithId(int id)
+        public CategoryMockBuilder WithProperty<TProperty>(Expression<Func<CategoryMockBuilder, TProperty>> propertyExpression, TProperty value)
         {
-            _faker
-                .RuleFor(c => c.Id, f => id);
-            return this;
-        }
-
-        public CategoryMockBuilder WithName(string name)
-        {
-            _faker
-                .RuleFor(c => c.Name, f => name);
+            _faker.RuleFor(propertyExpression, f => value);
             return this;
         }
     }

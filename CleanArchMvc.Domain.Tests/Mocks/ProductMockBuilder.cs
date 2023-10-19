@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,12 +15,12 @@ namespace CleanArchMvc.Domain.Tests.Mocks
     public class ProductMockBuilder
     {
         private readonly Faker<ProductMockBuilder> _faker;
-        private int Id { get; set; }
-        private string Name { get; set; } = string.Empty;
-        private string Description { get; set; } = string.Empty;
-        private decimal Price { get; set; } = decimal.Zero;
-        private int Stock { get; set; }
-        private string ImageUrl { get; set; } = string.Empty;
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public decimal Price { get; set; } = decimal.Zero;
+        public int Stock { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
 
         public ProductMockBuilder()
         {
@@ -45,33 +46,9 @@ namespace CleanArchMvc.Domain.Tests.Mocks
             );
         }
 
-        public ProductMockBuilder WithName(string name)
+        public ProductMockBuilder WithProperty<TProperty>(Expression<Func<ProductMockBuilder, TProperty>> propertyExpression, TProperty value)
         {
-            _faker.RuleFor(p => p.Name, f => name);
-            return this;
-        }
-
-        public ProductMockBuilder WithDescription(string description)
-        {
-            _faker.RuleFor(p => p.Description, f => description);
-            return this;
-        }
-
-        public ProductMockBuilder WithPrice(decimal price)
-        {
-            _faker.RuleFor(p => p.Price, f => price);
-            return this;
-        }
-
-        public ProductMockBuilder WithStock(int stock)
-        {
-            _faker.RuleFor(p => p.Stock, f => stock);
-            return this;
-        }
-
-        public ProductMockBuilder WithImage(string imageUrl)
-        {
-            _faker.RuleFor(p => p.ImageUrl, f => imageUrl);
+            _faker.RuleFor(propertyExpression, f => value);
             return this;
         }
     }
