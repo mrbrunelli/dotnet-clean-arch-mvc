@@ -18,21 +18,30 @@ namespace CleanArchMvc.Domain.Tests
         }
 
         [Theory]
+        [InlineData("Beer Glass")]
+        [InlineData("Premium Beer Glass")]
+        public void CreateCategory_CompoundName_ResultObjectValidState(string name)
+        {
+            Action action = () => _categoryMock.WithName(name);
+            action.Should().NotThrow();
+        }
+
+        [Theory]
         [InlineData(-1)]
         [InlineData(-20)]
         [InlineData(-100)]
         public void CreateCategory_NegativeIdValue_DomainExceptionInvalidId(int id)
         {
-            Action action = () => _categoryMock.WithNegativeId(id).Build();
+            Action action = () => _categoryMock.WithId(id).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid Id value");
         }
 
         [Theory]
         [InlineData("C")]
         [InlineData("Ca")]
-        public void CreateCategory_ShortNameValue_DomainExceptionInvalidName(string name)
+        public void CreateCategory_ShortNameValue_DomainExceptionShortName(string name)
         {
-            Action action = () => _categoryMock.WithInvalidName(name).Build();
+            Action action = () => _categoryMock.WithName(name).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Name too short, minimum 3 characters");
         }
 
@@ -40,9 +49,16 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("  ")]
-        public void CreateCategory_MissingNameValue_DomainExceptionInvalidName(string name)
+        public void CreateCategory_MissingNameValue_DomainExceptionRequiredName(string name)
         {
-            Action action = () => _categoryMock.WithInvalidName(name).Build();
+            Action action = () => _categoryMock.WithName(name).Build();
+            action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
+        }
+
+        [Fact]
+        public void CreateCategory_NullNameValue_DomainExceptionRequiredName()
+        {
+            Action action = () => _categoryMock.WithName(null).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
         }
     }

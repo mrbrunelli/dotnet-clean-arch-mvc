@@ -23,14 +23,14 @@ namespace CleanArchMvc.Domain.Tests.Mocks
             return _faker.Generate();
         }
 
-        public CategoryMockBuilder WithNegativeId(int id)
+        public CategoryMockBuilder WithId(int id)
         {
             _faker
                 .CustomInstantiator(f => new Category(id, f.Commerce.Categories(1).First()));
             return this;
         }
 
-        public CategoryMockBuilder WithInvalidName(string name)
+        public CategoryMockBuilder WithName(string name)
         {
             _faker
                 .CustomInstantiator(f => new Category(f.IndexFaker, name));
