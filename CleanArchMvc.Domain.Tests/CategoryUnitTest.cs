@@ -12,13 +12,16 @@ namespace CleanArchMvc.Domain.Tests
         public void CreateCategory_WithValidParameters_ResultObjectValidState()
         {
             Action action = () => new CategoryMockBuilder().Build();
-            action.Should().NotThrow<DomainExceptionValidation>();
+            action.Should().NotThrow();
         }
 
-        [Fact]
-        public void CreateCategory_NegativeIdValue_DomainExceptionInvalidId()
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-20)]
+        [InlineData(-100)]
+        public void CreateCategory_NegativeIdValue_DomainExceptionInvalidId(int id)
         {
-            Action action = () => new CategoryMockBuilder().WithNegativeId().Build();
+            Action action = () => new CategoryMockBuilder().WithNegativeId(id).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid Id value");
         }
     }
