@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace CleanArchMvc.Domain.Tests.Mocks
 {
-    public class ProductMockBuilder
+    public class ProductMockBuilder : MockBuilder<Product, ProductMockBuilder>
     {
-        private readonly Faker<ProductMockBuilder> _faker;
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -24,7 +23,7 @@ namespace CleanArchMvc.Domain.Tests.Mocks
 
         public ProductMockBuilder()
         {
-            _faker = new Faker<ProductMockBuilder>()
+            _faker 
                 .RuleFor(p => p.Id, f => f.IndexFaker)
                 .RuleFor(p => p.Name, f => f.Commerce.ProductName())
                 .RuleFor(p => p.Description, f => f.Commerce.ProductDescription())
@@ -33,9 +32,8 @@ namespace CleanArchMvc.Domain.Tests.Mocks
                 .RuleFor(p => p.ImageUrl, f => f.Internet.Url());
         }
 
-        public Product Build()
+        protected override Product CreateInstance(ProductMockBuilder mock)
         {
-            var mock = _faker.Generate();
             return new Product(
                 mock.Id,
                 mock.Name,
@@ -44,12 +42,6 @@ namespace CleanArchMvc.Domain.Tests.Mocks
                 mock.Stock,
                 mock.ImageUrl
             );
-        }
-
-        public ProductMockBuilder WithProperty<TProperty>(Expression<Func<ProductMockBuilder, TProperty>> propertyExpression, TProperty value)
-        {
-            _faker.RuleFor(propertyExpression, f => value);
-            return this;
         }
     }
 }
