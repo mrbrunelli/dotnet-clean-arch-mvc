@@ -49,16 +49,10 @@ namespace CleanArchMvc.Domain.Tests
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("  ")]
-        public void CreateCategory_MissingNameValue_DomainExceptionRequiredName(string name)
+        [InlineData(null)]
+        public void CreateCategory_NullAndEmptyBlank_DomainExceptionRequiredName(string name)
         {
             Action action = () => _categoryMock.WithName(name).Build();
-            action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
-        }
-
-        [Fact]
-        public void CreateCategory_NullNameValue_DomainExceptionRequiredName()
-        {
-            Action action = () => _categoryMock.WithName(null).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
         }
     }

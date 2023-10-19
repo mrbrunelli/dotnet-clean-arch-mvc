@@ -10,30 +10,34 @@ namespace CleanArchMvc.Domain.Tests.Mocks
 {
     public class CategoryMockBuilder
     {
-        private readonly Faker<Category> _faker;
+        private readonly Faker<CategoryMockBuilder> _faker;
+        private int Id {  get; set; }
+        private string Name { get; set; } = string.Empty;
 
         public CategoryMockBuilder()
         {
-            _faker = new Faker<Category>()
-                .CustomInstantiator(f => new Category(f.IndexFaker, f.Commerce.Categories(1).First()));
+            _faker = new Faker<CategoryMockBuilder>()
+                .RuleFor(c => c.Id, f => f.IndexFaker)
+                .RuleFor(c => c.Name, f => f.Commerce.Categories(1).First());
         }
 
         public Category Build()
         {
-            return _faker.Generate();
+            var mock = _faker.Generate();
+            return new Category(mock.Id, mock.Name);
         }
 
         public CategoryMockBuilder WithId(int id)
         {
             _faker
-                .CustomInstantiator(f => new Category(id, f.Commerce.Categories(1).First()));
+                .RuleFor(c => c.Id, f => id);
             return this;
         }
 
         public CategoryMockBuilder WithName(string name)
         {
             _faker
-                .CustomInstantiator(f => new Category(f.IndexFaker, name));
+                .RuleFor(c => c.Name, f => name);
             return this;
         }
     }
