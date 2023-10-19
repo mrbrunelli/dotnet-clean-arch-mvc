@@ -31,8 +31,8 @@ namespace CleanArchMvc.Domain.Entities
 
         private static void ValidateDomain(string name)
         {
-            DomainExceptionValidation.When(string.IsNullOrEmpty(name), "Invalid name. Name is required");
-            DomainExceptionValidation.When(name.Length < 3, "Invalid name. Too short, minimum 3 characters");
+            DomainExceptionValidation.When(string.IsNullOrWhiteSpace(name), "Invalid name. Name is required");
+            DomainExceptionValidation.When(name.Length < 3, "Name too short, minimum 3 characters");
         }
 
     }

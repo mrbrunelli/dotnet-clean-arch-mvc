@@ -29,5 +29,12 @@ namespace CleanArchMvc.Domain.Tests.Mocks
                 .CustomInstantiator(f => new Category(id, f.Commerce.Categories(1).First()));
             return this;
         }
+
+        public CategoryMockBuilder WithInvalidName(string name)
+        {
+            _faker
+                .CustomInstantiator(f => new Category(f.IndexFaker, name));
+            return this;
+        }
     }
 }

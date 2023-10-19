@@ -24,5 +24,23 @@ namespace CleanArchMvc.Domain.Tests
             Action action = () => new CategoryMockBuilder().WithNegativeId(id).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid Id value");
         }
+
+        [Theory]
+        [InlineData("C")]
+        [InlineData("Ca")]
+        public void CreateCategory_ShortNameValue_DomainExceptionInvalidName(string name)
+        {
+            Action action = () => new CategoryMockBuilder().WithInvalidName(name).Build();
+            action.Should().Throw<DomainExceptionValidation>().WithMessage("Name too short, minimum 3 characters");
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("  ")]
+        public void CreateCategory_MissingNameValue_DomainExceptionInvalidName(string name)
+        {
+            Action action = () => new CategoryMockBuilder().WithInvalidName(name).Build();
+            action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
+        }
     }
 }
