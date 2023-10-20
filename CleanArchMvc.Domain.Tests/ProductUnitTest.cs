@@ -21,6 +21,16 @@ namespace CleanArchMvc.Domain.Tests
         }
 
         [Theory]
+        [InlineData(-1)]
+        [InlineData(-10)]
+        [InlineData(-1000)]
+        public void CreateProduct_NegativeId_DomainExceptionInvalidId(int id)
+        {
+            Action action = () => _productMock.WithProperty(p => p.Id, id).Build();
+            action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid Id value");
+        }
+
+        [Theory]
         [InlineData(null)]
         [InlineData("")]
         public void CreateProduct_NullAndEmptyName_DomainExceptionInvalidName(string name)
