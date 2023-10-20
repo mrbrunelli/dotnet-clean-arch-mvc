@@ -1,11 +1,7 @@
-﻿using CleanArchMvc.Domain.Tests.Mocks;
+﻿using CleanArchMvc.Domain.Entities;
+using CleanArchMvc.Domain.Tests.Mocks;
 using CleanArchMvc.Domain.Validation;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchMvc.Domain.Tests
 {
@@ -17,6 +13,13 @@ namespace CleanArchMvc.Domain.Tests
         public void CreateProduct_ValidParameters_ResultValidObjectState()
         {
             Action action = () => _productMock.Build();
+            action.Should().NotThrow();
+        }
+
+        [Fact]
+        public void CreateProduct_WithoutId_ResultValidObjectState()
+        {
+            Action action = () => new Product("Beer", "Coldest beer", 5.99m, 350, "/image-path.png");
             action.Should().NotThrow();
         }
 
@@ -100,6 +103,27 @@ namespace CleanArchMvc.Domain.Tests
         {
             Action action = () => _productMock.WithProperty(p => p.ImageUrl, image).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid image location. Too long, maximum 250 characters");
+        }
+
+        [Fact]
+        public void UpdateProduct_NewValues_ResultValidObjectState()
+        {
+            var product = new Product("Ber", "Warmest beer", 5.99m, 350, "/image-path.png");
+            var newName = "Beer";
+            var newDesc = "Coldest beer";
+            var newPric = 7.20m;
+            var newStoc = 210;
+            var newImag = "/img-path.jpg";
+            var newCaId = 4;
+
+            product.Update(newName, newDesc, newPric, newStoc, newImag, newCaId);
+
+            product.Name.Should().Be(newName);
+            product.Description.Should().Be(newDesc);
+            product.Price.Should().Be(newPric);
+            product.Stock.Should().Be(newStoc);
+            product.Image.Should().Be(newImag); 
+            product.CategoryId.Should().Be(newCaId);
         }
     }
 }

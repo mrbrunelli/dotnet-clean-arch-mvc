@@ -1,4 +1,3 @@
-using Bogus;
 using CleanArchMvc.Domain.Entities;
 using CleanArchMvc.Domain.Tests.Mocks;
 using CleanArchMvc.Domain.Validation;
@@ -14,6 +13,13 @@ namespace CleanArchMvc.Domain.Tests
         public void CreateCategory_WithValidParameters_ResultObjectValidState()
         {
             Action action = () => _categoryMock.Build();
+            action.Should().NotThrow();
+        }
+
+        [Fact]
+        public void CreateCategory_WithoutIdParameter_ResultObjectValidState()
+        {
+            Action action = () => new Category("Drinks");
             action.Should().NotThrow();
         }
 
@@ -54,6 +60,17 @@ namespace CleanArchMvc.Domain.Tests
         {
             Action action = () => _categoryMock.WithProperty(p => p.Name, name).Build();
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid name. Name is required");
+        }
+
+        [Fact]
+        public void UpdateCategory_NewValues_ResultObjectValidState()
+        {
+            var category = new Category("Drinks");
+            var newName = "Alcoholic drinks";
+
+            category.Update(newName);
+
+            category.Name.Should().Be(newName);
         }
     }
 }
