@@ -13,7 +13,7 @@ namespace CleanArchMvc.Infra.IoC
         {
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(
-                    configuration.GetConnectionString("DefaulConnection"),
+                    configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
                 )
             );
