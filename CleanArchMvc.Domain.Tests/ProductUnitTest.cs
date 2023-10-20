@@ -106,6 +106,13 @@ namespace CleanArchMvc.Domain.Tests
         }
 
         [Fact]
+        public void CreateProduct_NullImagePath_NoNullReferenceException()
+        {
+            Action action = () => _productMock.WithProperty(p => p.ImageUrl, null).Build();
+            action.Should().NotThrow<NullReferenceException>();
+        }
+
+        [Fact]
         public void UpdateProduct_NewValues_ResultValidObjectState()
         {
             var product = new Product("Ber", "Warmest beer", 5.99m, 350, "/image-path.png");
