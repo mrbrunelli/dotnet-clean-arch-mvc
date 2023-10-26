@@ -38,13 +38,6 @@ namespace CleanArchMvc.Application.Services
             return _mapper.Map<ProductDTO>(product);
         }
 
-        public async Task<ProductDTO> GetByIdIncludeCategory(int? id)
-        {
-            var query = new GetProductByIdQuery(id) ?? throw new ApplicationException($"Entity could not be loaded");
-            var product = await _mediator.Send(query);
-            return _mapper.Map<ProductDTO>(product);
-        }
-
         public async Task Remove(int? id)
         {
             var command = new ProductRemoveCommand(id) ?? throw new ApplicationException($"Entity could not be loaded");

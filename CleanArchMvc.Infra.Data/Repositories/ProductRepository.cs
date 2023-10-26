@@ -33,17 +33,6 @@ namespace CleanArchMvc.Infra.Data.Repositories
                 return null;
             }
 
-            return await _context.FindAsync<Product>(id.Value);
-        }
-
-        public async Task<Product?> GetByIdIncludeCategoryAsync(int? id)
-        {
-            if (!id.HasValue)
-            {
-                return null;
-            }
-
-            // Eager loading
             return await _context.Products
                 .Include(c => c.Category)
                 .SingleOrDefaultAsync(p => p.Id == id.Value);
