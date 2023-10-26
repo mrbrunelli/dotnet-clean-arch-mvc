@@ -7,6 +7,14 @@
         "cleanarchmvc.webui": "DoNotStart",
         "cleanarchmvc.sqlserver": "StartWithoutDebugging"
       }
+    },
+    "Docker Compose Only DB": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "cleanarchmvc.sqlserver": "StartWithoutDebugging",
+        "cleanarchmvc.webui": "DoNotStart"
+      }
     }
   }
 }
